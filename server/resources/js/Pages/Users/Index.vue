@@ -2,9 +2,12 @@
 
 import UserTable from "./UserTable.vue";
 import BaseDrawer from "../../Components/BaseDrawer.vue";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import UserForm from "./UserForm.vue";
+import {usePage} from "@inertiajs/vue3";
 
+const page = usePage();
+const users = computed(() => page.props.users);
 const isDrawerOpen = ref(false);
 const User = ref(null);
 
@@ -22,7 +25,7 @@ const handleFormCancel = () => {
 </script>
 
 <template>
-    <UserTable @OnCreateOrUpdate="handleCreateOrUpdate"/>
+    <UserTable @OnCreateOrUpdate="handleCreateOrUpdate" :users="users"/>
     <BaseDrawer :isOpen="isDrawerOpen"
                 :title="User ? 'Sửa người dùng' : 'Thêm người dùng'"
                 @close="isDrawerOpen = false">

@@ -52,7 +52,7 @@
                     <th class="px-6 py-4">ID</th>
                     <th class="px-6 py-4">Username</th>
                     <th class="px-6 py-4">Status</th>
-                    <th class="px-6 py-4">Department ID</th>
+                    <th class="px-6 py-4">Department</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -75,7 +75,7 @@
                 {{ user.status }}
               </span>
                     </td>
-                    <td class="px-6 py-4 text-gray-500">{{ user.department_id || '—' }}</td>
+                    <td class="px-6 py-4 text-gray-500">{{ user.department.name || '—' }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -151,17 +151,9 @@
 import {ref, computed, watch} from 'vue';
 
 const emit = defineEmits(['OnCreateOrUpdate']);
-// Mock Data
-const users = ref([
-    {id: 1, username: 'admin_01', status: 'active', department_id: 10},
-    {id: 2, username: 'staff_dev', status: 'active', department_id: 12},
-    {id: 3, username: 'hr_manager', status: 'inactive', department_id: 5},
-    {id: 4, username: 'alex_dan', status: 'active', department_id: null},
-    {id: 5, username: 'guest_user', status: 'inactive', department_id: null},
-    {id: 6, username: 'marketing_01', status: 'active', department_id: 3},
-    {id: 7, username: 'sales_lead', status: 'active', department_id: 4},
-    {id: 8, username: 'support_02', status: 'inactive', department_id: 8},
-]);
+const props = defineProps({
+    users: Object,
+})
 
 // States
 const searchQuery = ref('');
@@ -178,7 +170,7 @@ watch([itemsPerPage, searchQuery], () => {
 
 // Computed Logic
 const filteredUsers = computed(() => {
-    return users.value.filter(u => u.username.toLowerCase().includes(searchQuery.value.toLowerCase()));
+    return props.users.filter(u => u.username.toLowerCase().includes(searchQuery.value.toLowerCase()));
 });
 
 const totalPages = computed(() => Math.ceil(filteredUsers.value.length / itemsPerPage.value));

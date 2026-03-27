@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('description')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->unsignedBigInteger('parent_id');
             $table->timestamps();
 
